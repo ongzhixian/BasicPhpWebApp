@@ -53,7 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <?php include 'includes/header.php'; ?>
 
-
     <article class="with-aside">
 
         <main>

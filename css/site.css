@@ -1,0 +1,90 @@
+body {
+    color: #26355D;
+}
+
+header.page {
+    border: 2px solid #6AECE1;
+    padding: 1rem 2rem;
+}
+
+header.page > h1 {
+    margin: 0;
+    display: inline-block;
+}
+
+nav.navbar > a {
+    color: #26CCC2;
+    text-decoration: none;
+    font-size: 1.67rem;
+    margin-right: 1.67rem;
+}
+
+nav.navbar > a:hover {
+    text-decoration: underline;
+}
+
+article {
+    padding: 1rem 2rem;
+}
+
+
+article.with-aside {
+    display: grid;
+    grid-template-columns: 1fr 376px;
+}
+
+article.with-aside main {
+    margin-right: 1.3rem
+}
+
+article.with-aside aside {
+    padding: .5rem;
+    
+}
+
+article.with-aside aside h1 {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+/* Style for read-only input fields */
+
+input[readonly] {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+/* Style for the accounts table */
+
+table.accounts {
+    border-collapse: collapse;
+}
+
+table.accounts th:nth-child(1) {
+  width: 8rem;
+}
+
+table.accounts th:nth-child(2) {
+  width: 13rem;
+}
+
+table.accounts th:nth-child(3), table.accounts td:nth-child(3) {
+  width: 9rem;
+  text-align: right;
+}
+
+/* Style for the accounts table */
+
+table.financial-summary {
+    border-collapse: collapse;
+}
+
+table.financial-summary th:nth-child(1), table.financial-summary td:nth-child(1) {
+  width: 28rem;
+  text-align: right;
+}
+
+table.financial-summary th:nth-child(2), table.financial-summary td:nth-child(2) {
+    width: 9rem;
+    text-align: right;
+}

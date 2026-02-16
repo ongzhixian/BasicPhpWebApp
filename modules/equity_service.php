@@ -1,0 +1,142 @@
+<?php
+namespace PineappleFinance\Services;
+
+require_once "base_data_service.php";
+
+interface IEquityService {
+    
+    public function GetEquityList();
+    public function GetEquity($equityId = null);
+    public function GetTotalEquityInvestmentAmount();
+    // public function GetFixedDeposit($fixedDepositId = null);
+    // public function GetTotalFixedDepositPlacementAmount();
+    
+    public function GetSanitisedInput($data, $forNew = false);
+
+    public function RegisterEquity($data); // ADD
+    public function UpdateEquity($data); // UPDATE
+}
+
+class EquityService extends BaseDataService implements IEquityService
+{
+    public function GetEquityList() {
+        $tsql = <<<EOT
+        select  id
+                , description
+                , symbol as reference_code
+                , quantity * buy_price as investment_value
+                , buy_date as effective_date
+                , quantity * current_price as current_value
+                , create_at
+                , update_at
+                , 'equity' as type
+        from [PineappleFinance].[dbo].[equity]
+        EOT;
+        $params = array();
+        return $this->query($tsql, $params);
+    }
+
+    public function GetEquity($equityId = null) {
+        $tsql = <<<EOT
+        select  id
+                , symbol
+                , description
+                , quantity
+                , buy_price
+                , buy_date
+                , current_price
+                , create_at
+                , update_at
+                , 'equity' as type
+        from [PineappleFinance].[dbo].[equity]
+        where id = ?;
+        EOT;
+        $params = array(&$equityId);
+        return $this->query($tsql, $params);
+    }
+
+    public function GetTotalEquityInvestmentAmount() {
+        $tsql = <<<EOT
+        select sum(quantity * buy_price) as totalEquityInvestmentAmount 
+        from [PineappleFinance].[dbo].[equity];
+        EOT;
+        $params = array();        
+        return $this->query($tsql, $params);
+    }
+
+    // public function GetTotalFixedDepositPlacementAmount() {
+    //     $tsql = <<<EOT
+    //     select sum(placement_amount) as totalPlacementAmount 
+    //     from [PineappleFinance].[dbo].[fixed_deposit];
+    //     EOT;
+    //     $params = array();        
+    //     return $this->query($tsql, $params);
+    // }
+
+    public function GetSanitisedInput($data, $forNew = false) {
+        if ( !$forNew && empty($data->id) ) return null;
+        if (empty($data->symbol)) return null;
+        if (empty($data->description)) return null;
+        if (!is_numeric($data->quantity)) return null;
+        if (!is_numeric($data->buy_price)) return null;
+        if (!is_numeric($data->current_price)) return null;
+        if (empty($data->buy_date)) return null;
+
+        $input = new \stdClass();
+        if ( !$forNew ) $input->id = trim($data->id);
+        $input->symbol = trim($data->symbol);
+        $input->description = trim($data->description);
+        $input->quantity = trim($data->quantity);
+        $input->buy_price = trim($data->buy_price);
+        $input->buy_date = trim($data->buy_date);
+        $input->current_price = trim($data->current_price);
+
+        return $input;
+    }
+
+    public function RegisterEquity($data) {
+        $tsql = "insert into equity (symbol, description, quantity, buy_price, buy_date, current_price) values (?, ?, ?, ?, ?, ?);";
+        $params = array(&$data->symbol, &$data->description, &$data->quantity, &$data->buy_price, &$data->buy_date, &$data->current_price);
+        return $this->execute($tsql, $params);
+    }
+
+    public function UpdateEquity($data) {
+        $tsql = <<<EOT
+        update e
+        set e.symbol = ?
+        , e.description = ?
+        , e.quantity = ?
+        , e.buy_price = ?
+        , e.buy_date = ?
+        , e.current_price = ?
+        , e.update_at = CURRENT_TIMESTAMP
+        from equity e
+        where e.id = ?;
+        EOT;
+        $params = array(&$data->symbol, &$data->description, &$data->quantity, &$data->buy_price, &$data->buy_date, &$data->current_price, &$data->id);
+        return $this->execute($tsql, $params);
+    }
+
+    // public function UpdateFixedDeposit($data) {
+    //     // print_r($data);
+    //     // reference_code, placement_amount, interest_per_annum_percentage, effective_date, tenor_in_days
+    //     $tsql = <<<EOT
+    //     update fd
+    //     set fd.description = ?
+    //     , fd.reference_code = ?
+    //     , fd.placement_amount = ?
+    //     , fd.interest_per_annum_percentage = ?
+    //     , fd.effective_date = ?
+    //     , fd.tenor_in_days = ?
+    //     , fd.update_at = CURRENT_TIMESTAMP
+    //     from fixed_deposit fd
+    //     where fd.id = ?;
+    //     EOT;
+    //     $params = array(&$data->description, &$data->reference_code
+    //         , &$data->placement_amount, &$data->interest_rate_percentage
+    //         , &$data->effective_date, &$data->tenor_in_days, &$data->id);
+    //     return $this->execute($tsql, $params);
+    // }
+}
+
+?>

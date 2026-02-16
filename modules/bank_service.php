@@ -5,7 +5,7 @@ require_once "base_data_service.php";
 
 interface IBankService {
 
-    public function GetBankList();
+    public function GetBankList($user_id);
 
     public function GetBank($code);
 
@@ -18,11 +18,11 @@ interface IBankService {
 
 class BankService extends BaseDataService implements IBankService {
     
-    public function GetBankList() {
+    public function GetBankList($user_id) {
         $tsql = <<<EOT
-        select * from bank order by name;
+        select * from bank where create_by = ? order by name;
         EOT;
-        $params = array();
+        $params = array(&$user_id);
         return $this->query($tsql, $params);
     }
 

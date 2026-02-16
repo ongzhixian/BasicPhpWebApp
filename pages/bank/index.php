@@ -1,34 +1,31 @@
 <?php
 namespace PineappleFinance\Pages\Bank;
 
-session_start();
-
 require_once "../../_config.php";
 
 require_once "../../modules/bank_service.php";
 use PineappleFinance\Services\BankService;
 $bankService = new BankService();
-$banks = $bankService->GetBankList();
 
-// session_start();
-// require_once "../modules/bank_module.php";
-// $bankModule = new Bank();
-// $banks = $bankModule->GetList();
-// print_r($banks);
+session_start();
+require_authenticated_user();
+
+$banks = $bankService->GetBankList($_SESSION['user_id']);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Banks | Pine</title>
   <meta charset="utf-8" />
-  <meta name="description" content="Pineapple Finance Site" />
+  <meta name="description" content="Banks list page" />
   <meta name="author" content="Ong Zhi Xian" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
   <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="/css/normalize.css" />
   <link rel="stylesheet" href="/css/skeleton.css" />
-  <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
   <link rel="stylesheet" href="/css/site.css" />
 </head>
 <body>

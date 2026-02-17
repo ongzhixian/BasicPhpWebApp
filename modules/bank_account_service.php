@@ -95,8 +95,8 @@ class BankAccountService extends BaseDataService implements IBankAccountService
     }
 
     public function RegisterBankAccount($data) {
-        $tsql = "insert into bank_account (bank_id, account_code, description, balance) values (?, ?, ?, ?);";
-        $params = array(&$data->bank_code, &$data->account_number, &$data->account_description, &$data->account_balance);
+        $tsql = "insert into bank_account (bank_id, account_code, description, balance, create_by, create_at, update_by, update_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
+        $params = array(&$data->bank_code, &$data->account_number, &$data->account_description, &$data->account_balance, &$data->create_by, &$data->create_at, &$data->update_by, &$data->update_at);
         return $this->execute($tsql, $params);
     }
 
@@ -105,11 +105,12 @@ class BankAccountService extends BaseDataService implements IBankAccountService
         update ba
         set ba.description = ?
         , ba.balance = ?
-        , ba.update_at = CURRENT_TIMESTAMP
+        , ba.update_by = ?
+        , ba.update_at = ?
         from bank_account ba
         where ba.account_code = ?;
         EOT;
-        $params = array(&$data->account_description, &$data->account_balance, &$data->account_number);
+        $params = array(&$data->account_description, &$data->account_balance, &$data->update_by, &$data->update_at, &$data->account_number);
         return $this->execute($tsql, $params);
     }
 }

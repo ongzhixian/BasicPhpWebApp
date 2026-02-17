@@ -5,6 +5,7 @@ if ( !isset($_GET['account-code']) ) {
     header("Location: /pages/accounts.php");
     exit();
 }
+$account_code = htmlspecialchars($_GET['account-code']);
 
 require_once "../../_config.php";
 
@@ -17,13 +18,15 @@ use PineappleFinance\Services\BankAccountService;
 $bankAccountService = new BankAccountService();
 
 session_start();
+$session_user_id = require_authenticated_user();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $input = (object) [
         "account_number" => $_GET['account-code'],
         "account_description" => $_POST['account_description'],
-        "account_balance" => $_POST['account_balance']
+        "account_balance" => $_POST['account_balance'],
+        "session_user_id" => $session_user_id
     ];
 
     $sanitisedInput = $bankAccountService->GetSanitisedInput($input);
@@ -36,9 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$bankIdNamePairList = $bankService->GetBankIdNamePairList();
+$bankIdNamePairList = $bankService->GetBankIdNamePairList($session_user_id);
 
-$account_code = htmlspecialchars($_GET['account-code']);
 $bankAccount = $bankAccountService->GetBankAccount($account_code)[0];
 // print_r($bankAccount);
 

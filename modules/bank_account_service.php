@@ -5,9 +5,9 @@ require_once "base_data_service.php";
 
 interface IBankAccountService {
     
-    public function GetBankAccountList();
+    public function GetBankAccountList($user_id);
     public function GetBankAccount($accountCode = null);
-    public function GetTotalBankBalance();
+    public function GetTotalBankBalance($user_id);
     
     public function GetSanitisedInput($input, $forNew = false);
 
@@ -18,7 +18,7 @@ interface IBankAccountService {
 
 class BankAccountService extends BaseDataService implements IBankAccountService
 {
-    public function GetBankAccountList() {
+    public function GetBankAccountList($user_id) {
         $tsql = <<<EOT
         select	ba.id
                 , b.name
@@ -28,9 +28,10 @@ class BankAccountService extends BaseDataService implements IBankAccountService
                 , ba.update_at
         from	bank_account ba
         inner join bank b on ba.bank_id = b.id
+        where b.create_by = ?
         order by b.name;
         EOT;
-        $params = array();
+        $params = array(&$user_id);
         return $this->query($tsql, $params);
     }
 
@@ -51,11 +52,13 @@ class BankAccountService extends BaseDataService implements IBankAccountService
         return $this->query($tsql, $params);
     }
 
-    public function GetTotalBankBalance() {
+    public function GetTotalBankBalance($user_id) {
         $tsql = <<<EOT
-        select sum(balance) as balance from bank_account;
+        select sum(balance) as balance from bank_account ba
+        inner join bank b on ba.bank_id = b.id
+        where b.create_by = ?;
         EOT;
-        $params = array();        
+        $params = array(&$user_id);        
         return $this->query($tsql, $params);
     }
 

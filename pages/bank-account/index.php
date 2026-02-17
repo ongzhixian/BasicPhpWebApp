@@ -1,24 +1,25 @@
 <?php
 namespace PineappleFinance\Pages\BankAccount;
 
-session_start();
-
 require_once "../../_config.php";
 
 require_once "../../modules/bank_account_service.php";
 use PineappleFinance\Services\BankAccountService;
 $bankAccountService = new BankAccountService();
-$bankAccountList = $bankAccountService->GetBankAccountList();
 
-$totalBankBalance = $bankAccountService->GetTotalBankBalance()[0]['balance'];
+session_start();
+require_authenticated_user();
+
+$bankAccountList = $bankAccountService->GetBankAccountList($_SESSION['user_id']);
+$totalBankBalance = $bankAccountService->GetTotalBankBalance($_SESSION['user_id'])[0]['balance'];
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Pine</title>
+  <title>Bank Accounts | Pine</title>
   <meta charset="utf-8" />
-  <meta name="description" content="Pineapple Finance Site" />
+  <meta name="description" content="Bank account list" />
   <meta name="author" content="Ong Zhi Xian" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -80,7 +81,7 @@ $totalBankBalance = $bankAccountService->GetTotalBankBalance()[0]['balance'];
                     <tr>
                         <td></td>
                         <td colspan="1"><strong>Total Balance</strong></td>
-                        <td><strong><?= number_format($totalBankBalance,2,".",",") ?></strong></td>
+                        <td><strong><?= number_format($totalBankBalance ?? 0,2,".",",") ?></strong></td>
                         <td></td>
                     </tr>
             </table>

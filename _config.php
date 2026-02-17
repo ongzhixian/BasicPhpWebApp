@@ -14,6 +14,7 @@ function require_authenticated_user() {
         header("Location: /login.php");
         exit();
     }
+    return $_SESSION['user_id'];
 }
 
 ?>

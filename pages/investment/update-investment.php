@@ -1,6 +1,13 @@
 <?php
 namespace PineappleFinance\Pages\BankAccount;
 
+if ( !isset($_GET['id']) ) {
+    header("Location: /pages/investment/index.php");
+    exit();
+}
+$investment_id = htmlspecialchars($_GET['id']);
+
+
 require_once "../../_config.php";
 
 require_once "../../modules/investment_service.php";
@@ -8,21 +15,18 @@ use PineappleFinance\Services\InvestmentService;
 $investmentService = new InvestmentService();
 
 session_start();
+$session_user_id = require_authenticated_user();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-	// [description] [varchar](128) NOT NULL,
-	// [reference_code] [varchar](128) NOT NULL,
-	// [investment_amount] [decimal](18, 2) NOT NULL,
-	// [effective_date] [datetime2](7) NOT NULL,
-	// [current_value] [decimal](18, 2) NOT NULL,
+	
     $input = (object) [
         "id" => $_GET['id'],
         "description" => $_POST['description'],
         "reference_code" => $_POST['reference_code'],
         "investment_amount" => $_POST['investment_amount'],
         "effective_date" => $_POST['effective_date'],
-        "current_value" => $_POST['current_value']
+        "current_value" => $_POST['current_value'],
+        "session_user_id" => $session_user_id
     ];
 
     $sanitisedInput = $investmentService->GetSanitisedInput($input, false);
@@ -36,7 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-$investment_id = htmlspecialchars($_GET['id']);
 $investment = $investmentService->GetInvestment($investment_id)[0];
 
 ?>

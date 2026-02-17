@@ -12,22 +12,16 @@ use PineappleFinance\Services\InvestmentService;
 $investmentService = new InvestmentService();
 
 session_start();
-
-$bankIdNamePairList = $bankService->GetBankIdNamePairList();
+$session_user_id = require_authenticated_user();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-	// [description] [varchar](128) NOT NULL,
-	// [reference_code] [varchar](128) NOT NULL,
-	// [investment_amount] [decimal](18, 2) NOT NULL,
-	// [effective_date] [datetime2](7) NOT NULL,
-	// [current_value] [decimal](18, 2) NOT NULL,
     $input = (object) [
         "description" => $_POST['description'],
         "reference_code" => $_POST['reference_code'],
         "investment_amount" => $_POST['investment_amount'],
         "effective_date" => $_POST['effective_date'],
-        "current_value" => $_POST['current_value']
+        "current_value" => $_POST['current_value'],
+        "session_user_id" => $session_user_id
     ];
 
     $sanitisedInput = $investmentService->GetSanitisedInput($input, true);
@@ -39,6 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $feedbackMessage = "Invalid input. Please check your entries.";
     }
 }
+
+$bankIdNamePairList = $bankService->GetBankIdNamePairList($session_user_id);
 
 ?>
 <!DOCTYPE html>

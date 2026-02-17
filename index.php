@@ -1,5 +1,5 @@
 <?php
-//namespace PineappleFinance\Pages\BankAccount;
+namespace PineappleFinance\Pages\Dashboard;
 
 require_once "_config.php";
 
@@ -20,14 +20,13 @@ use PineappleFinance\Services\EquityService;
 $equityService = new EquityService();
 
 session_start();
-require_authenticated_user();
+$session_user_id = require_authenticated_user();
 
-$totalBankBalance = $bankAccountService->GetTotalBankBalance()[0]['balance'];
-$totalFixedDepositPlacementAmount = $fixedDepositService->GetTotalFixedDepositPlacementAmount()[0]['totalPlacementAmount']
-    -200000;
+$totalBankBalance = $bankAccountService->GetTotalBankBalance($session_user_id)[0]['balance'];
+$totalFixedDepositPlacementAmount = $fixedDepositService->GetTotalFixedDepositPlacementAmount($session_user_id)[0]['totalPlacementAmount'];
 
-$totalEquityInvestmentAmount = $equityService->GetTotalEquityInvestmentAmount()[0]['totalEquityInvestmentAmount'];
-$totalOtherInvestmentAmount = $investmentService->GetTotalInvestmentAmount()[0]['totalInvestmentAmount'];
+$totalEquityInvestmentAmount = $equityService->GetTotalEquityInvestmentAmount($session_user_id)[0]['totalEquityInvestmentAmount'];
+$totalOtherInvestmentAmount = $investmentService->GetTotalInvestmentAmount($session_user_id)[0]['totalInvestmentAmount'];
 
 $totalInvestmentAmount = $totalEquityInvestmentAmount + $totalOtherInvestmentAmount;
 
@@ -99,7 +98,7 @@ $investmentPercentage = ($totalInvestmentAmount / $grandTotal) * 100;
                     <td><?= number_format($cashPercentage, 2) ?>%</td>
                 </tr>
                 <tr>
-                    <td>Fixed Deposit Placement Amount (ex)</td>
+                    <td>Fixed Deposit Placement Amount</td>
                     <td><?= number_format($totalFixedDepositPlacementAmount, 2) ?></td>
                     <td><?= number_format($fixedDepositPercentage, 2) ?>%</td>
                 </tr>
@@ -125,7 +124,7 @@ $investmentPercentage = ($totalInvestmentAmount / $grandTotal) * 100;
         </main>
 
         <aside>
-            <h1>Welcome</h1>
+            <h1>Dashboard</h1>
             <img src="/images/kim-yoo-jung.jpg" alt="Kim Yoo Jung" style="width: 100%; height: 100%; object-fit: cover;" />
         </aside>
 

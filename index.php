@@ -74,14 +74,14 @@ $investmentPercentage = ($totalInvestmentAmount / $grandTotal) * 100;
 
     <article class="with-aside">
 
-        <main>
+        <main style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
 
-            <section>
-                <h1>Financial Summary</h1>
+            <section class="current">
+                <h1 style="text-align: center;">Financial Summary</h1>
                 <div style="width: 300px; margin: auto;">
                     <canvas id="myChart"></canvas>
                 </div>
-            </section>
+            
 
             <table class="u-full-width financial-summary">
             <thead>
@@ -120,7 +120,12 @@ $investmentPercentage = ($totalInvestmentAmount / $grandTotal) * 100;
                     <td></td>
                 </tr>
             </table>
+            </section>
 
+            <section class="projection">
+                <h1 style="text-align: center;">Financial Projection</h1>
+                <p style="text-align: center;">Coming soon...</p>
+            </section>
         </main>
 
         <aside>

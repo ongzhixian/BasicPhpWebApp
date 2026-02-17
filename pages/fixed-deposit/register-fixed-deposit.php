@@ -11,23 +11,10 @@ require_once "../../modules/fixed_deposit_service.php";
 use PineappleFinance\Services\FixedDepositService;
 $fixedDepositService = new FixedDepositService();
 
-// function sanitise($data) {
-//     if (empty($data->bank_code)) return null;
-//     if (empty($data->account_number)) return null;
-//     if (!is_numeric($data->account_balance)) return null;
-    
-//     $input = new stdClass();
-//     $input->bank_code = trim($data->bank_code);
-//     $input->account_number = trim($data->account_number);
-//     $input->account_description = trim($data->account_description);
-//     $input->account_balance = trim($data->account_balance);
-
-//     return $input;
-// }
-
 session_start();
+$session_user_id = require_authenticated_user();
 
-$bankIdNamePairList = $bankService->GetBankIdNamePairList();
+$bankIdNamePairList = $bankService->GetBankIdNamePairList($session_user_id);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -39,7 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         "interest_rate_percentage" => $_POST['interest_rate_percentage'],
         "effective_date" => $_POST['effective_date'],
-        "tenor_in_days" => $_POST['tenor_in_days']
+        "tenor_in_days" => $_POST['tenor_in_days'],
+        "session_user_id" => $session_user_id
     ];
 
     $sanitisedInput = $fixedDepositService->GetSanitisedInput($input, true);

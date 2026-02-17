@@ -1,8 +1,6 @@
 <?php
 namespace PineappleFinance\Pages\Investment;
 
-session_start();
-
 require_once "../../_config.php";
 
 require_once "../../modules/investment_service.php";
@@ -13,13 +11,15 @@ require_once "../../modules/equity_service.php";
 use PineappleFinance\Services\EquityService;
 $equityService = new EquityService();
 
+session_start();
+$session_user_id = require_authenticated_user();
 
-$investments = $investmentService->GetInvestmentList();
-$equities = $equityService->GetEquityList();
+$investments = $investmentService->GetInvestmentList($session_user_id);
+$equities = $equityService->GetEquityList($session_user_id);
 // $totalPlacementAmount = $investmentService->GetTotalFixedDepositPlacementAmount();
 
-$totalInvestmentAmount = $investmentService->GetTotalInvestmentAmount()[0]['totalInvestmentAmount'];
-$totalEquityInvestmentAmount = $equityService->GetTotalEquityInvestmentAmount()[0]['totalEquityInvestmentAmount'];
+$totalInvestmentAmount = $investmentService->GetTotalInvestmentAmount($session_user_id)[0]['totalInvestmentAmount'];
+$totalEquityInvestmentAmount = $equityService->GetTotalEquityInvestmentAmount($session_user_id)[0]['totalEquityInvestmentAmount'];
 
 $totalInvestmentAmount = $totalInvestmentAmount + $totalEquityInvestmentAmount;
 ?>

@@ -5,9 +5,9 @@ require_once "base_data_service.php";
 
 interface IInvestmentService {
     
-    public function GetInvestmentList();
+    public function GetInvestmentList($user_id);
     public function GetInvestment($investmentId = null);
-    public function GetTotalInvestmentAmount();
+    public function GetTotalInvestmentAmount($user_id);
     
     // public function GetSanitisedInput($input, $forNew = false);
 
@@ -17,11 +17,12 @@ interface IInvestmentService {
 
 class InvestmentService extends BaseDataService implements IInvestmentService
 {
-    public function GetInvestmentList() {
+    public function GetInvestmentList($user_id) {
         $tsql = <<<EOT
-        select *, 'investment' as type from [PineappleFinance].[dbo].[investment];
+        select *, 'investment' as type from [PineappleFinance].[dbo].[investment]
+        where create_by = ?;
         EOT;
-        $params = array();
+        $params = array(&$user_id);
         return $this->query($tsql, $params);
     }
 
@@ -34,12 +35,13 @@ class InvestmentService extends BaseDataService implements IInvestmentService
         return $this->query($tsql, $params);
     }
 
-    public function GetTotalInvestmentAmount() {
+    public function GetTotalInvestmentAmount($user_id) {
         $tsql = <<<EOT
         select sum(investment_amount) as totalInvestmentAmount 
-        from [PineappleFinance].[dbo].[investment];
+        from [PineappleFinance].[dbo].[investment]
+        where create_by = ?;
         EOT;
-        $params = array();        
+        $params = array(&$user_id);        
         return $this->query($tsql, $params);
     }
 

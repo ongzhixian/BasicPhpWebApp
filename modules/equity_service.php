@@ -5,9 +5,9 @@ require_once "base_data_service.php";
 
 interface IEquityService {
     
-    public function GetEquityList();
+    public function GetEquityList($user_id);
     public function GetEquity($equityId = null);
-    public function GetTotalEquityInvestmentAmount();
+    public function GetTotalEquityInvestmentAmount($user_id);
     // public function GetFixedDeposit($fixedDepositId = null);
     // public function GetTotalFixedDepositPlacementAmount();
     
@@ -19,7 +19,7 @@ interface IEquityService {
 
 class EquityService extends BaseDataService implements IEquityService
 {
-    public function GetEquityList() {
+    public function GetEquityList($user_id) {
         $tsql = <<<EOT
         select  id
                 , description
@@ -31,8 +31,9 @@ class EquityService extends BaseDataService implements IEquityService
                 , update_at
                 , 'equity' as type
         from [PineappleFinance].[dbo].[equity]
+        where create_by = ?;
         EOT;
-        $params = array();
+        $params = array(&$user_id);
         return $this->query($tsql, $params);
     }
 
@@ -55,12 +56,13 @@ class EquityService extends BaseDataService implements IEquityService
         return $this->query($tsql, $params);
     }
 
-    public function GetTotalEquityInvestmentAmount() {
+    public function GetTotalEquityInvestmentAmount($user_id) {
         $tsql = <<<EOT
         select sum(quantity * buy_price) as totalEquityInvestmentAmount 
-        from [PineappleFinance].[dbo].[equity];
+        from [PineappleFinance].[dbo].[equity]
+        where create_by = ?;
         EOT;
-        $params = array();        
+        $params = array(&$user_id);        
         return $this->query($tsql, $params);
     }
 

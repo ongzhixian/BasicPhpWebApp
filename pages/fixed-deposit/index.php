@@ -1,7 +1,6 @@
 <?php
 namespace PineappleFinance\Pages\FixedDeposit;
 
-
 require_once "../../_config.php";
 
 require_once "../../modules/fixed_deposit_service.php";

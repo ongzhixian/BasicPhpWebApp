@@ -5,6 +5,7 @@ if ( !isset($_GET['id']) ) {
     header("Location: /pages/fixed-deposit/index.php");
     exit();
 }
+$fixed_deposit_id = htmlspecialchars($_GET['id']);
 
 require_once "../../_config.php";
 
@@ -17,6 +18,7 @@ use PineappleFinance\Services\FixedDepositService;
 $fixedDepositService = new FixedDepositService();
 
 session_start();
+$session_user_id = require_authenticated_user();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -29,7 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         "interest_rate_percentage" => $_POST['interest_rate_percentage'],
         "effective_date" => $_POST['effective_date'],
-        "tenor_in_days" => $_POST['tenor_in_days']
+        "tenor_in_days" => $_POST['tenor_in_days'],
+        "session_user_id" => $session_user_id
     ];
 
     $sanitisedInput = $fixedDepositService->GetSanitisedInput($input, false);
@@ -42,9 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$bankIdNamePairList = $bankService->GetBankIdNamePairList();
+$bankIdNamePairList = $bankService->GetBankIdNamePairList($session_user_id);
 
-$fixed_deposit_id = htmlspecialchars($_GET['id']);
 $fixed_deposit = $fixedDepositService->GetFixedDeposit($fixed_deposit_id)[0];
 
 ?>

@@ -18,6 +18,7 @@ $is_authenticated = isset($_SESSION['username']);
         <a href="/pages/bank/index.php">Banks</a>
         <a href="/pages/login/index.php">Logins</a>
         <a href="/pages/role/index.php">Roles</a>
+        <a href="/pages/role-assignment/index.php">Role Assignments</a>
         <a href="/logout.php">Logout</a>
     </nav>
     <?php } ?>

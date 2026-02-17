@@ -5,9 +5,9 @@ require_once "base_data_service.php";
 
 interface IFixedDepositService {
     
-    public function GetFixedDepositList();
+    public function GetFixedDepositList($user_id);
     public function GetFixedDeposit($fixedDepositId = null);
-    public function GetTotalFixedDepositPlacementAmount();
+    public function GetTotalFixedDepositPlacementAmount($user_id);
     
     public function GetSanitisedInput($input, $forNew = false);
 
@@ -18,7 +18,7 @@ interface IFixedDepositService {
 
 class FixedDepositService extends BaseDataService implements IFixedDepositService
 {
-    public function GetFixedDepositList() {
+    public function GetFixedDepositList($user_id) {
         $tsql = <<<EOT
         SELECT fd.id
             , b.name
@@ -33,9 +33,10 @@ class FixedDepositService extends BaseDataService implements IFixedDepositServic
             , fd.update_at
         FROM fixed_deposit fd
         inner join bank b on fd.bank_id = b.id
-                order by fd.maturity_date desc;
+        where fd.create_by = ?
+        order by fd.maturity_date desc;
         EOT;
-        $params = array();
+        $params = array(&$user_id);
         return $this->query($tsql, $params);
     }
 
@@ -60,12 +61,13 @@ class FixedDepositService extends BaseDataService implements IFixedDepositServic
         return $this->query($tsql, $params);
     }
 
-    public function GetTotalFixedDepositPlacementAmount() {
+    public function GetTotalFixedDepositPlacementAmount($user_id) {
         $tsql = <<<EOT
         select sum(placement_amount) as totalPlacementAmount 
-        from [PineappleFinance].[dbo].[fixed_deposit];
+        from [PineappleFinance].[dbo].[fixed_deposit]
+        where create_by = ?;
         EOT;
-        $params = array();        
+        $params = array(&$user_id);        
         return $this->query($tsql, $params);
     }
 

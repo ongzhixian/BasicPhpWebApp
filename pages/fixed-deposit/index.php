@@ -1,7 +1,6 @@
 <?php
 namespace PineappleFinance\Pages\FixedDeposit;
 
-session_start();
 
 require_once "../../_config.php";
 
@@ -9,15 +8,18 @@ require_once "../../modules/fixed_deposit_service.php";
 use PineappleFinance\Services\FixedDepositService;
 $fixedDepositService = new FixedDepositService();
 
-$fixedDeposits = $fixedDepositService->GetFixedDepositList();
-$totalPlacementAmount = $fixedDepositService->GetTotalFixedDepositPlacementAmount();
+session_start();
+$session_user_id = require_authenticated_user();
+
+$fixedDeposits = $fixedDepositService->GetFixedDepositList($session_user_id);
+$totalPlacementAmount = $fixedDepositService->GetTotalFixedDepositPlacementAmount($session_user_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Pine</title>
+  <title>Fixed Deposits | Pine</title>
   <meta charset="utf-8" />
-  <meta name="description" content="Pineapple Finance Site" />
+  <meta name="description" content="Fixed deposit list" />
   <meta name="author" content="Ong Zhi Xian" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -70,7 +72,7 @@ $totalPlacementAmount = $fixedDepositService->GetTotalFixedDepositPlacementAmoun
                 <tfoot>
                     <tr>
                         <td colspan="4" style="text-align: right; font-weight: bold;">Total</td>
-                        <td><?= number_format($totalPlacementAmount[0]['totalPlacementAmount'], 2) ?></td>
+                        <td><?= number_format($totalPlacementAmount[0]['totalPlacementAmount'] ?? 0, 2) ?></td>
                     </tr>
                 </tfoot>
             </table>

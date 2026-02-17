@@ -32,7 +32,7 @@ abstract class BaseDataService {
                     "message" => "Operation completed successfully."
                 ];
             } else {
-                //print_r( sqlsrv_errors(), false );
+                if (DEBUG) print_r( sqlsrv_errors(), false );
                 return [
                     "success" => false,
                     "message" => "Failed to execute operation.",

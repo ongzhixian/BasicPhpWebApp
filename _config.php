@@ -7,6 +7,8 @@ define('DBNAME', 'school');         // Database name
 define('SQLSERVER', '(local)');             // Database server
 define('PINEAPPLE_DB', 'PineappleFinance'); // Database server
 
+define('DEBUG', true); // debug query
+
 function require_authenticated_user() {
     if (!isset($_SESSION['username'])) {
         header("Location: /login.php");

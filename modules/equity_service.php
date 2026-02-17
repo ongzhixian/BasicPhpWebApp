@@ -83,22 +83,34 @@ class EquityService extends BaseDataService implements IEquityService
         if (!is_numeric($data->buy_price)) return null;
         if (!is_numeric($data->current_price)) return null;
         if (empty($data->buy_date)) return null;
+        if (empty($data->session_user_id)) return null;
+
+        $timestamp = date("Y-m-d H:i:s");
+        $session_user_id = trim($data->session_user_id);
 
         $input = new \stdClass();
-        if ( !$forNew ) $input->id = trim($data->id);
         $input->symbol = trim($data->symbol);
         $input->description = trim($data->description);
         $input->quantity = trim($data->quantity);
         $input->buy_price = trim($data->buy_price);
         $input->buy_date = trim($data->buy_date);
         $input->current_price = trim($data->current_price);
+        $input->update_by = $session_user_id;
+        $input->update_at = $timestamp;
+
+        if ( $forNew ) {
+            $input->create_by = $session_user_id;
+            $input->create_at = $timestamp;
+        } else {
+            $input->id = trim($data->id);
+        }
 
         return $input;
     }
 
     public function RegisterEquity($data) {
-        $tsql = "insert into equity (symbol, description, quantity, buy_price, buy_date, current_price) values (?, ?, ?, ?, ?, ?);";
-        $params = array(&$data->symbol, &$data->description, &$data->quantity, &$data->buy_price, &$data->buy_date, &$data->current_price);
+        $tsql = "insert into equity (symbol, description, quantity, buy_price, buy_date, current_price, create_by, create_at, update_by, update_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        $params = array(&$data->symbol, &$data->description, &$data->quantity, &$data->buy_price, &$data->buy_date, &$data->current_price, &$data->create_by, &$data->create_at, &$data->update_by, &$data->update_at);
         return $this->execute($tsql, $params);
     }
 
@@ -111,11 +123,12 @@ class EquityService extends BaseDataService implements IEquityService
         , e.buy_price = ?
         , e.buy_date = ?
         , e.current_price = ?
-        , e.update_at = CURRENT_TIMESTAMP
+        , e.update_at = ?
+        , e.update_by = ?
         from equity e
         where e.id = ?;
         EOT;
-        $params = array(&$data->symbol, &$data->description, &$data->quantity, &$data->buy_price, &$data->buy_date, &$data->current_price, &$data->id);
+        $params = array(&$data->symbol, &$data->description, &$data->quantity, &$data->buy_price, &$data->buy_date, &$data->current_price, &$data->update_at, &$data->update_by, &$data->id);
         return $this->execute($tsql, $params);
     }
 

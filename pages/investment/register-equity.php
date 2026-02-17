@@ -12,17 +12,9 @@ use PineappleFinance\Services\EquityService;
 $equityService = new EquityService();
 
 session_start();
-
-$bankIdNamePairList = $bankService->GetBankIdNamePairList();
+$session_user_id = require_authenticated_user();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	// [id] [smallint] IDENTITY(1,1) NOT NULL,
-	// [symbol] [varchar](12) NOT NULL,
-	// [description] [varchar](128) NOT NULL,
-	// [quantity] [decimal](18, 2) NOT NULL,
-	// [buy_price] [decimal](18, 2) NOT NULL,
-	// [buy_date] [datetime2](7) NOT NULL,
-	// [current_price] [decimal](18, 2) NOT NULL,
     $input = (object) [
         "symbol" => $_POST['symbol'],
         "description" => $_POST['description'],
@@ -30,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         "buy_price" => $_POST['buy_price'],
         "buy_date" => $_POST['buy_date'],
         "current_price" => $_POST['current_price'],
+        "session_user_id" => $session_user_id
     ];
 
     $sanitisedInput = $equityService->GetSanitisedInput($input, true);
@@ -41,6 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $feedbackMessage = "Invalid input. Please check your entries.";
     }
 }
+
+$bankIdNamePairList = $bankService->GetBankIdNamePairList($session_user_id);
 
 ?>
 <!DOCTYPE html>

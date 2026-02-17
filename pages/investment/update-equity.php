@@ -5,6 +5,7 @@ if ( !isset($_GET['id']) ) {
     header("Location: /pages/investment/index.php");
     exit();
 }
+$equity_id = htmlspecialchars($_GET['id']);
 
 require_once "../../_config.php";
 
@@ -17,17 +18,11 @@ use PineappleFinance\Services\EquityService;
 $equityService = new EquityService();
 
 session_start();
+$session_user_id = require_authenticated_user();
 
-$bankIdNamePairList = $bankService->GetBankIdNamePairList();
+$bankIdNamePairList = $bankService->GetBankIdNamePairList($session_user_id);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	// [id] [smallint] IDENTITY(1,1) NOT NULL,
-	// [symbol] [varchar](12) NOT NULL,
-	// [description] [varchar](128) NOT NULL,
-	// [quantity] [decimal](18, 2) NOT NULL,
-	// [buy_price] [decimal](18, 2) NOT NULL,
-	// [buy_date] [datetime2](7) NOT NULL,
-	// [current_price] [decimal](18, 2) NOT NULL,
     $input = (object) [
         "id" => $_GET['id'],
         "symbol" => $_POST['symbol'],
@@ -36,15 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         "buy_price" => $_POST['buy_price'],
         "buy_date" => $_POST['buy_date'],
         "current_price" => $_POST['current_price'],
+        "session_user_id" => $session_user_id
     ];
 
-    print("IN");
-    print_r($input);
-
     $sanitisedInput = $equityService->GetSanitisedInput($input, false);
-
-    print("SANITISED");
-    print_r($sanitisedInput);
 
     if ($sanitisedInput) {
         $response = $equityService->UpdateEquity($sanitisedInput);
@@ -54,9 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$equity_id = htmlspecialchars($_GET['id']);
+$bankIdNamePairList = $bankService->GetBankIdNamePairList($session_user_id);
 $equity = $equityService->GetEquity($equity_id)[0];
-// print_r($equity);
+
 
 ?>
 <!DOCTYPE html>

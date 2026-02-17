@@ -7,22 +7,33 @@ if ( !isset($_GET['code']) ) {
 }
 $bankCode = htmlspecialchars($_GET['code']);
 
-session_start();
-
 require_once "../../_config.php";
 
 require_once "../../modules/bank_service.php";
 use PineappleFinance\Services\BankService;
 $bankService = new BankService();
 
+session_start();
+require_authenticated_user();
+
 $bank = array();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $bank_code = $_POST['bank_code'];
-    $bank_full_name = $_POST['bank_full_name'];
+    
+    $input = (object) [
+        "bank_code" => $_POST['bank_code'],
+        "full_name" => $_POST['bank_full_name'],
+        "session_user_id" => $_SESSION['user_id']
+    ];
 
-    $response = $bankService->UpdateBank($bank_code, $bank_full_name);
-    $feedbackMessage = $response["message"];
+    $sanitisedInput = $bankService->GetSanitisedInput($input);
+
+    if ($sanitisedInput) {
+        $response = $bankService->UpdateBank($sanitisedInput);
+        $feedbackMessage = $response["message"];
+    } else {
+        $feedbackMessage = "Invalid input data.";
+    }
 }
 $bank = $bankService->GetBank($bankCode)[0];
 

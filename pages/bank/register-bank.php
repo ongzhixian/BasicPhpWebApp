@@ -1,20 +1,36 @@
 <?php
 namespace PineappleFinance\Pages\Bank;
 
-session_start();
-
 require_once "../../_config.php";
 
 require_once "../../modules/bank_service.php";
 use PineappleFinance\Services\BankService;
 $bankService = new BankService();
 
+session_start();
+require_authenticated_user();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $bank_code = $_POST['bank_code'];
     $bank_full_name = $_POST['bank_full_name'];
 
-    $response = $bankService->RegisterBank($bank_code, $bank_full_name);
-    $feedbackMessage = $response["message"];
+    $input = (object) [
+        "bank_code" => $_POST['bank_code'],
+        "full_name" => $_POST['bank_full_name'],
+        "session_user_id" => $_SESSION['user_id']
+    ];
+
+    $sanitisedInput = $bankService->GetSanitisedInput($input, true);
+
+    if ($sanitisedInput) {
+        $response = $bankService->RegisterBank($sanitisedInput);
+        $feedbackMessage = $response["message"];
+    } else {
+        $feedbackMessage = implode(" ", $sanitisedInput["messages"]);
+        // Handle invalid input case, e.g., display error message
+        // For now, we will just return early to avoid processing invalid data
+        return;
+    }
 }
 
 ?>
@@ -69,21 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <span class="feedback-message"><?php echo isset($feedbackMessage) ? $feedbackMessage : ''; ?></span>
                 </div>
 
-                <!--
-                <div class="row">
-                    <div class="four columns">
-                        <label for="exampleRecipientInput">Reason for contacting</label>
-                        <select class="u-full-width" id="exampleRecipientInput">
-                            <option value="Option 1">Questions</option>
-                            <option value="Option 2">Admiration</option>
-                            <option value="Option 3">Can I get your number?</option>
-                        </select>
-                    </div>
-                </div>
-                -->
-
             </form>
-
 
         </main>
 

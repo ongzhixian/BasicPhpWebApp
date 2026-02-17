@@ -64,15 +64,32 @@ class BankAccountService extends BaseDataService implements IBankAccountService
 
     public function GetSanitisedInput($data, $forNew = false) {
         
-        if ( $forNew && empty($data->bank_code) ) return null;
         if (empty($data->account_number)) return null;
+        if (empty($data->account_description)) return null;
         if (!is_numeric($data->account_balance)) return null;
+        if (empty($data->session_user_id)) return null;
+
+        if ( $forNew ) {
+            if (empty($data->bank_code)) return null;
+        }
+
+        if (empty($data->account_number)) return null;
+
+        $timestamp = date("Y-m-d H:i:s");
+        $session_user_id = trim($data->session_user_id);
 
         $input = new \stdClass();
-        if ( $forNew ) $input->bank_code = trim($data->bank_code);
         $input->account_number = trim($data->account_number);
         $input->account_description = trim($data->account_description);
         $input->account_balance = trim($data->account_balance);
+        $input->update_by = $session_user_id;
+        $input->update_at = $timestamp;
+
+        if ($forNew) {
+            $input->bank_code = trim($data->bank_code);
+            $input->create_by = $session_user_id;
+            $input->create_at = $timestamp;
+        }
 
         return $input;
     }

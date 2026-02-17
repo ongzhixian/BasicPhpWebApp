@@ -7,7 +7,7 @@ interface IBankService {
 
     public function GetBankList($user_id);
     public function GetBank($code);
-    public function GetBankIdNamePairList();
+    public function GetBankIdNamePairList($user_id);
 
     public function GetSanitisedInput($input, $forNew = false);
 
@@ -69,43 +69,12 @@ class BankService extends BaseDataService implements IBankService {
         return $result;
     }
 
-    public function GetBankIdNamePairList() {
-        $serverName = SQLSERVER;
-        $connectionInfo = array( "Database"=>PINEAPPLE_DB);
-        
-        $result = array();
-
-        try {
-            $conn = sqlsrv_connect( $serverName, $connectionInfo);
-            if ( $conn === false ) {
-                echo "Unable to connect.</br>";
-                die( print_r( sqlsrv_errors(), true));
-            }  
-
-            $tsql = "select * from bank order by name;";
-            $params = array();
-
-            $stmt = sqlsrv_query( $conn, $tsql, $params);
-            if( $stmt === false ) {
-                echo "Error in executing query.</br>";
-                die( print_r( sqlsrv_errors(), true));
-            }
-            
-            while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
-                $result[] = $row;
-            }
-            
-            return $result;
-        }
-        catch(Exception $e) {
-            echo 'Message: ' .$e->getMessage();
-        }
-        finally {
-            sqlsrv_free_stmt( $stmt);  
-            sqlsrv_close( $conn);
-        }
-
-        return $result;
+    public function GetBankIdNamePairList($user_id) {
+        $tsql = <<<EOT
+        select * from bank where create_by = ? order by name;
+        EOT;
+        $params = array(&$user_id);
+        return $this->query($tsql, $params);
     }
 
     public function GetSanitisedInput($data, $forNew = false) {

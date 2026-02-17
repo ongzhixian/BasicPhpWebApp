@@ -11,23 +11,10 @@ require_once "../../modules/bank_account_service.php";
 use PineappleFinance\Services\BankAccountService;
 $bankAccountService = new BankAccountService();
 
-function sanitise($data) {
-    if (empty($data->bank_code)) return null;
-    if (empty($data->account_number)) return null;
-    if (!is_numeric($data->account_balance)) return null;
-    
-    $input = new stdClass();
-    $input->bank_code = trim($data->bank_code);
-    $input->account_number = trim($data->account_number);
-    $input->account_description = trim($data->account_description);
-    $input->account_balance = trim($data->account_balance);
-
-    return $input;
-}
-
 session_start();
+$session_user_id = require_authenticated_user();
 
-$bankIdNamePairList = $bankService->GetBankIdNamePairList();
+$bankIdNamePairList = $bankService->GetBankIdNamePairList($session_user_id);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -35,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         "bank_code" => $_POST['bank_code'],
         "account_number" => $_POST['account_number'],
         "account_description" => $_POST['account_description'],
-        "account_balance" => $_POST['account_balance']
+        "account_balance" => $_POST['account_balance'],
+        "session_user_id" => $session_user_id
     ];
 
     $sanitisedInput = $bankAccountService->GetSanitisedInput($input, true);

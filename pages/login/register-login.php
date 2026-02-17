@@ -8,13 +8,14 @@ use PineappleFinance\Services\LoginService;
 $loginService = new LoginService();
 
 session_start();
+$session_user_id = require_authenticated_user();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $input = (object) [
         "username" => $_POST['username'],
         "password" => $_POST['password'],
-        "session_user_id" => $_SESSION['user_id']
+        "session_user_id" => $session_user_id
     ];
 
     $sanitisedInput = $loginService->GetSanitisedInput($input, true);

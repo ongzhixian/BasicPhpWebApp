@@ -5,6 +5,7 @@ if ( !isset($_GET['username']) ) {
     header("Location: /pages/login/index.php");
     exit();
 }
+$username = htmlspecialchars($_GET['username']);
 
 require_once "../../_config.php";
 
@@ -13,13 +14,14 @@ use PineappleFinance\Services\LoginService;
 $loginService = new LoginService();
 
 session_start();
+$session_user_id = require_authenticated_user();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $input = (object) [
-        "username" => $_GET['username'],
+        "username" => $username,
         "password" => $_POST['password'],
-        "session_user_id" => $_SESSION['user_id']
+        "session_user_id" => $session_user_id
     ];
 
     $sanitisedInput = $loginService->GetSanitisedInput($input, false);
@@ -35,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$login = $loginService->GetLogin($_GET['username']);
+$login = $loginService->GetLogin($username);
 
 ?>
 <!DOCTYPE html>

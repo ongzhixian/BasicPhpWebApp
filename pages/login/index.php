@@ -1,14 +1,15 @@
 <?php
 namespace PineappleFinance\Pages\BankAccount;
 
-session_start();
-
 require_once "../../_config.php";
 
 require_once "../../modules/login_service.php";
 use PineappleFinance\Services\LoginService;
 $loginService = new LoginService();
-    
+
+session_start();
+$session_user_id = require_authenticated_user();
+
 $loginList = $loginService->GetLoginList();
 
 ?>

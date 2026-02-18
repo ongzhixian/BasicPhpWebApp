@@ -8,12 +8,15 @@ interface IBankAccountService {
     public function GetBankAccountList($user_id);
     public function GetBankAccount($accountCode = null);
     public function GetTotalBankBalance($user_id);
+
+    public function GetBankAccountHistory($user_id);
     
     public function GetSanitisedInput($input, $forNew = false);
 
     public function RegisterBankAccount($data); // ADD
     public function UpdateBankAccount($data); // UPDATE
 
+    public function ArchiveBankAccount($user_id);
 }
 
 class BankAccountService extends BaseDataService implements IBankAccountService
@@ -57,6 +60,17 @@ class BankAccountService extends BaseDataService implements IBankAccountService
         select sum(balance) as balance from bank_account ba
         inner join bank b on ba.bank_id = b.id
         where b.create_by = ?;
+        EOT;
+        $params = array(&$user_id);        
+        return $this->query($tsql, $params);
+    }
+
+    public function GetBankAccountHistory($user_id) {
+        $tsql = <<<EOT
+        select  * 
+        from    bank_account_history 
+        where   start_of_month = DATEADD([MONTH], -1, DATEFROMPARTS(YEAR(GETDATE()), MONTH(GETDATE()), 1))
+                and create_by = ?;
         EOT;
         $params = array(&$user_id);        
         return $this->query($tsql, $params);
@@ -111,6 +125,22 @@ class BankAccountService extends BaseDataService implements IBankAccountService
         where ba.account_code = ?;
         EOT;
         $params = array(&$data->account_description, &$data->account_balance, &$data->update_by, &$data->update_at, &$data->account_number);
+        return $this->execute($tsql, $params);
+    }
+
+    public function ArchiveBankAccount($user_id) {
+        $tsql = <<<EOT
+        insert into bank_account_history (start_of_month, bank_id, account_code, description, balance, create_by)
+        select  DATEADD([MONTH], -1, DATEFROMPARTS(YEAR(GETDATE()), MONTH(GETDATE()), 1)) AS start_of_month
+                , bank_id
+                , account_code
+                , description
+                , balance
+                , create_by
+        from    bank_account 
+        where   create_by = ?;
+        EOT;
+        $params = array(&$user_id);
         return $this->execute($tsql, $params);
     }
 }

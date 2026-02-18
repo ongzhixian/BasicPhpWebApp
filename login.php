@@ -10,6 +10,10 @@ require_once "modules/role_assignment_service.php";
 use PineappleFinance\Services\RoleAssignmentService;
 $roleAssignmentService = new RoleAssignmentService();
 
+require_once "modules/bank_account_service.php";
+use PineappleFinance\Services\BankAccountService;
+$bankAccountService = new BankAccountService();
+
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -27,11 +31,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $response = $loginService->GetValidatedLogin($input);
 
         if ($response) {
+            $session_user_id = $response['user_id'];
             $_SESSION['username'] = $response['username'];
             $_SESSION['user_id'] = $response['user_id'];
 
             $login_roles = $roleAssignmentService->GetLoginRoles($_SESSION['user_id']);
             $_SESSION['assigned_roles'] = array_column($login_roles, 'role_name');
+
+            $historicalBankAccountList = $bankAccountService->GetBankAccountHistory($session_user_id);
+            $historicalBankAccountRecordCount = count($historicalBankAccountList);
+            if ($historicalBankAccountRecordCount <= 0) {
+                $bankAccountService->ArchiveBankAccount($session_user_id);
+            }
             header("Location: /index.php");
             exit();
         } else {

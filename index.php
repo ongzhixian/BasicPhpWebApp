@@ -33,24 +33,17 @@ $totalInvestmentAmount = $totalEquityInvestmentAmount + $totalOtherInvestmentAmo
 $grandTotal = $totalBankBalance + $totalFixedDepositPlacementAmount 
     + $totalEquityInvestmentAmount + $totalOtherInvestmentAmount;
 
+if ($grandTotal !== 0) {
+    $cashPercentage = ($totalBankBalance / $grandTotal) * 100;
+    $fixedDepositPercentage = ($totalFixedDepositPlacementAmount / $grandTotal) * 100;
+    $investmentPercentage = ($totalInvestmentAmount / $grandTotal) * 100;
+} else {
+    $cashPercentage = 0;
+    $fixedDepositPercentage = 0;
+    $investmentPercentage = 0;
+}
 
-$cashPercentage = ($totalBankBalance / $grandTotal) * 100;
-$fixedDepositPercentage = ($totalFixedDepositPlacementAmount / $grandTotal) * 100;
-$investmentPercentage = ($totalInvestmentAmount / $grandTotal) * 100;
-// $feedbackMessage = "";
-// $login = new LoginModule();
 
-// if ($_SERVER["REQUEST_METHOD"] == "POST") {
-//     $username = $_POST['username'];
-//     $password = $_POST['password'];
-
-//     $loginIsAdded = $login->AddLogin($username, $password);
-//     if ($loginIsAdded) {
-//         $feedbackMessage = "Login added successfully.";
-//     } else {
-//         $feedbackMessage = "Failed to add login.";
-//     }
-// }
 
 ?>
 <!DOCTYPE html>
@@ -94,23 +87,23 @@ $investmentPercentage = ($totalInvestmentAmount / $grandTotal) * 100;
             <tbody>
                 <tr>
                     <td>Bank Balance</td>
-                    <td><?= number_format($totalBankBalance, 2) ?></td>
+                    <td><?= number_format($totalBankBalance ?? 0, 2) ?></td>
                     <td><?= number_format($cashPercentage, 2) ?>%</td>
                 </tr>
                 <tr>
                     <td>Fixed Deposit Placement Amount</td>
-                    <td><?= number_format($totalFixedDepositPlacementAmount, 2) ?></td>
+                    <td><?= number_format($totalFixedDepositPlacementAmount ?? 0, 2) ?></td>
                     <td><?= number_format($fixedDepositPercentage, 2) ?>%</td>
                 </tr>
                 <tr>
                     <td>Equity Investment Amount</td>
-                    <td><?= number_format($totalEquityInvestmentAmount, 2) ?></td>
-                    <td><?= number_format($totalEquityInvestmentAmount / $grandTotal * 100, 2) ?>%</td>
+                    <td><?= number_format($totalEquityInvestmentAmount ?? 0, 2) ?></td>
+                    <td><?= number_format($grandTotal !== 0 ? $totalEquityInvestmentAmount / $grandTotal * 100 : 0, 2) ?>%</td>
                 </tr>
                 <tr>
                     <td>Other Investment Amount</td>
-                    <td><?= number_format($totalOtherInvestmentAmount, 2) ?></td>
-                    <td><?= number_format($totalOtherInvestmentAmount / $grandTotal * 100, 2) ?>%</td>
+                    <td><?= number_format($totalOtherInvestmentAmount ?? 0, 2) ?></td>
+                    <td><?= number_format($grandTotal !== 0 ? $totalOtherInvestmentAmount / $grandTotal * 100 : 0, 2) ?>%</td>
                 </tr>
             </tbody>
             <tfoot>

@@ -1,9 +1,14 @@
 <?php
 
 require_once "_config.php";
+
 require_once "modules/login_service.php";
 use PineappleFinance\Services\LoginService;
 $loginService = new LoginService();
+
+require_once "modules/role_assignment_service.php";
+use PineappleFinance\Services\RoleAssignmentService;
+$roleAssignmentService = new RoleAssignmentService();
 
 session_start();
 
@@ -24,6 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($response) {
             $_SESSION['username'] = $response['username'];
             $_SESSION['user_id'] = $response['user_id'];
+
+            $login_roles = $roleAssignmentService->GetLoginRoles($_SESSION['user_id']);
+            $_SESSION['assigned_roles'] = array_column($login_roles, 'role_name');
             header("Location: /index.php");
             exit();
         } else {

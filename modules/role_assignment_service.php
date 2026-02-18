@@ -7,6 +7,7 @@ interface IRoleAssignmentService {
     
     public function GetRoleAssignmentList();
     public function GetRoleAssignment($login_id, $role_id);
+    public function GetLoginRoles($login_id);
 
     public function GetLoginIdNamePairList();
     public function GetRoleIdNamePairList();
@@ -47,14 +48,16 @@ class RoleAssignmentService extends BaseDataService implements IRoleAssignmentSe
         return $this->query($tsql, $params);
     }
 
-    public function GetRole($name) {
+    public function GetLoginRoles($login_id) {
         $tsql = <<<EOT
-        select	name, description, update_at 
-        from	role 
-        where   name = ?;
+        select	ro.name as role_name
+        from	role_assignment ra
+        inner join role ro
+                on ra.role_id = ro.id
+        where	ra.login_id = ?;
         EOT;
-        $params = array($name);
-        return $this->query($tsql, $params)[0];
+        $params = array($login_id);
+        return $this->query($tsql, $params);
     }
 
     public function GetLoginIdNamePairList() {

@@ -1,7 +1,8 @@
 <?php
 namespace PineappleFinance\Pages\BankAccount;
 
-require_once "../../_config.php";
+require_once "../../_config.php"; // NOSONAR: Manual auto-loader
+use PineappleFinance\Includes\DefaultPageHeader;
 
 require_once "../../modules/bank_account_service.php";
 use PineappleFinance\Services\BankAccountService;
@@ -31,7 +32,7 @@ $totalBankBalance = $bankAccountService->GetTotalBankBalance($_SESSION['user_id'
 </head>
 <body>
 
-    <?php include_once '../../includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

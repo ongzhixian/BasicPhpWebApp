@@ -1,6 +1,6 @@
 <?php
 
-require_once "_config.php";
+require_once "_config.php"; // NOSONAR: Manual auto-loader
 use PineappleFinance\Includes\DefaultPageHeader;
 
 session_start();

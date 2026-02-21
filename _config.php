@@ -33,19 +33,17 @@ spl_autoload_register(function ($class) {
     $relative_class = substr($class, $len);
     print_r("Autoloading class: $class, relative class: $relative_class<br>");
 
-    $includePrefix = 'Includes\\';
-    if (strncmp($includePrefix, $class, $len) === 0) {
-        $file = $base_dir . 'includes\\header.php';
+    if (strpos($relative_class, 'Includes\\') === 0) {
+        $file = $base_dir . 'includes/header.php';
         if (file_exists($file)) {
             require_once $file;
         }
+        return;
     }
 
-    // Replace namespace separators with directory separators
+
+    // Default PSR-4 mapping
     $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-
-    print_r("File to include: ". $base_dir . str_replace('\\', '/', $relative_class) . '.php');
-
     if (file_exists($file)) {
         require $file;
     }

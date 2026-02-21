@@ -7,7 +7,8 @@ if ( !isset($_GET['id']) ) {
 }
 $fixed_deposit_id = htmlspecialchars($_GET['id']);
 
-require_once "../../_config.php";
+require_once "../../_config.php"; // NOSONAR: Manual auto-loader
+use PineappleFinance\Includes\DefaultPageHeader;
 
 require_once "../../modules/bank_service.php";
 use PineappleFinance\Services\BankService;

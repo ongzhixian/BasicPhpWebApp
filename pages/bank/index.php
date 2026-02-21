@@ -1,7 +1,8 @@
 <?php
 namespace PineappleFinance\Pages\Bank;
 
-require_once "../../_config.php";
+require_once "../../_config.php"; // NOSONAR: Manual auto-loader
+use PineappleFinance\Includes\DefaultPageHeader;
 
 require_once "../../modules/bank_service.php";
 use PineappleFinance\Services\BankService;
@@ -30,7 +31,7 @@ $banks = $bankService->GetBankList($_SESSION['user_id']);
 </head>
 <body>
 
-    <?php include_once '../../includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

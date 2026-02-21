@@ -7,7 +7,8 @@ if ( !isset($_GET['code']) ) {
 }
 $bankCode = htmlspecialchars($_GET['code']);
 
-require_once "../../_config.php";
+require_once "../../_config.php"; // NOSONAR: Manual auto-loader
+use PineappleFinance\Includes\DefaultPageHeader;
 
 require_once "../../modules/bank_service.php";
 use PineappleFinance\Services\BankService;
@@ -55,7 +56,7 @@ $bank = $bankService->GetBank($bankCode)[0];
 </head>
 <body>
 
-    <?php include_once '../../includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

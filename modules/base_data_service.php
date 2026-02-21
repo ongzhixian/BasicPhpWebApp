@@ -40,7 +40,7 @@ abstract class BaseDataService {
                 ];
             }
         }
-        catch(Exception $e) {
+        catch(\Exception $e) {
             return [
                 "success" => false,
                 "message" => "Failed to execute operation: Ex" . $e->getMessage()
@@ -75,7 +75,7 @@ abstract class BaseDataService {
             
             return $result;
         }
-        catch(Exception $e) {
+        catch(\Exception $e) {
             echo 'Message: ' .$e->getMessage();
         }
         finally {

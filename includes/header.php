@@ -9,7 +9,7 @@ class DefaultPageHeader {
         <header class="page">
             <h1>Pineapple Finance
                 <?php if ($is_authenticated) { ?> <sup><?= $_SESSION['username'] ?></sup>
-                <?php } ?> 
+                <?php } ?>
             </h1>
             
             <?php if ($is_authenticated) { ?>

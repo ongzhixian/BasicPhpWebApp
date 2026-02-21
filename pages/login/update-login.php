@@ -57,7 +57,7 @@ $login = $loginService->GetLogin($username);
 </head>
 <body>
 
-    <?php include '../../includes/header.php'; ?>
+    <?php include_once '../../includes/header.php'; ?>
 
     <article class="with-aside">
 

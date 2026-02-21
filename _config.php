@@ -40,7 +40,8 @@ spl_autoload_register(function ($class) {
     }
 
     if (file_exists($file)) {
-        require $file;
+        // NOSONAR: Autoloaders must use require/require_once; 'use' is not a substitute for file loading.
+        require_once $file;
     }
 });
 

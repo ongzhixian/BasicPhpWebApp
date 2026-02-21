@@ -27,3 +27,9 @@
 **/run*.ps1
 .idea/
 .scannerwork/
+
+
+**/play/.pytest_cache
+**/play/__pycache__
+**/play/screenshots
+**/play-backup/

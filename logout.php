@@ -1,5 +1,8 @@
 <?php
 
+require_once "_config.php";
+use PineappleFinance\Includes\DefaultPageHeader;
+
 session_start();
 
 if (!isset( $_SESSION['username'] )) {
@@ -31,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <?php include_once 'includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

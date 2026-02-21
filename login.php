@@ -1,6 +1,7 @@
 <?php
 
 require_once "_config.php";
+use PineappleFinance\Includes\DefaultPageHeader;
 
 require_once "modules/login_service.php";
 use PineappleFinance\Services\LoginService;
@@ -70,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <?php include_once 'includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

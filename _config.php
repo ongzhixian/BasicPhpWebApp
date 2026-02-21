@@ -23,14 +23,13 @@ spl_autoload_register(function ($class) {
     $prefix = 'PineappleFinance\\';
     $base_dir = __DIR__ . '\\'; // adjust to where your classes live
 
-    // Does the class use the namespace prefix?
+     // Skip if not handling application namespace
     $len = strlen($prefix);
     if (strncmp($prefix, $class, $len) !== 0) {
-        return; // not our namespace
+        return;
     }
-
-    // Get the relative class name
-    $relative_class = substr($class, $len);
+    
+    $relative_class = substr($class, $len); // Get the relative class name
     print_r("Autoloading class: $class, relative class: $relative_class<br>");
 
     if (strpos($relative_class, 'Includes\\') === 0) {
@@ -40,7 +39,7 @@ spl_autoload_register(function ($class) {
     }
 
     if (file_exists($file)) {
-        require_once $file; // NOSONAR: Autoloaders must use require/require_once; 'use' is not a substitute for file loading.
+        require_once $file; // NOSONAR: Autoloaders must use require/require_once;
     }
 });
 

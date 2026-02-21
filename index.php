@@ -3,6 +3,9 @@ namespace PineappleFinance\Pages\Dashboard;
 
 require_once "_config.php";
 
+require_once 'includes/header.php'; 
+use PineappleFinance\Includes\DefaultPageHeader;
+
 require_once "modules/bank_account_service.php";
 use PineappleFinance\Services\BankAccountService;
 $bankAccountService = new BankAccountService();
@@ -63,7 +66,7 @@ if ($grandTotal !== 0) {
 </head>
 <body>
 
-    <?php include_once 'includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

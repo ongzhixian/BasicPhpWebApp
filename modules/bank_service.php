@@ -57,7 +57,7 @@ class BankService extends BaseDataService implements IBankService {
             
             return $result;
         }
-        catch(Exception $e) {
+        catch(\Exception $e) {
             echo 'Message: ' .$e->getMessage();
         }
         finally {

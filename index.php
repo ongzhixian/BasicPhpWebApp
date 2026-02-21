@@ -2,7 +2,6 @@
 namespace PineappleFinance\Pages\Dashboard;
 
 require_once "_config.php";
-require_once __DIR__ . '/includes/header.php';
 
 use PineappleFinance\Includes\DefaultPageHeader;
 

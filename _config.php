@@ -30,7 +30,7 @@ spl_autoload_register(function ($class) {
     }
     
     $relative_class = substr($class, $len); // Get the relative class name
-    print_r("Autoloading class: $class, relative class: $relative_class<br>");
+    // print_r("Autoloading class: $class, relative class: $relative_class<br>");
 
     if (strpos($relative_class, 'Includes\\') === 0) {
         $file = $base_dir . 'includes/header.php';

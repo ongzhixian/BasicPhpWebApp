@@ -7,8 +7,8 @@ if ( !isset($_GET['id']) ) {
 }
 $investment_id = htmlspecialchars($_GET['id']);
 
-
-require_once "../../_config.php";
+require_once "../../_config.php"; // NOSONAR: Manual auto-loader
+use PineappleFinance\Includes\DefaultPageHeader;
 
 require_once "../../modules/investment_service.php";
 use PineappleFinance\Services\InvestmentService;
@@ -60,7 +60,7 @@ $investment = $investmentService->GetInvestment($investment_id)[0];
 </head>
 <body>
 
-    <?php include_once '../../includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

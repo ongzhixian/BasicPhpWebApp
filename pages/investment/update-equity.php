@@ -7,7 +7,8 @@ if ( !isset($_GET['id']) ) {
 }
 $equity_id = htmlspecialchars($_GET['id']);
 
-require_once "../../_config.php";
+require_once "../../_config.php"; // NOSONAR: Manual auto-loader
+use PineappleFinance\Includes\DefaultPageHeader;
 
 require_once "../../modules/bank_service.php";
 use PineappleFinance\Services\BankService;
@@ -66,7 +67,7 @@ $equity = $equityService->GetEquity($equity_id)[0];
 </head>
 <body>
 
-    <?php include_once '../../includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

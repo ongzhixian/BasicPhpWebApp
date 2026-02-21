@@ -6,11 +6,11 @@ class DefaultPageHeader {
         $is_authenticated = isset($_SESSION['username']);
         $assigned_roles = $_SESSION['assigned_roles'] ?? array();
         ?>
-        <header class="page"> 
-            <h1>Pineapple Finance 
-                <?php if ($is_authenticated) { ?> <sup><?= $_SESSION['username'] ?></sup> 
+        <header class="page">
+            <h1>Pineapple Finance
+                <?php if ($is_authenticated) { ?> <sup><?= $_SESSION['username'] ?></sup>
                 <?php } ?> 
-            </h1> 
+            </h1>
             
             <?php if ($is_authenticated) { ?>
             <nav class="navbar">
@@ -19,7 +19,7 @@ class DefaultPageHeader {
                 <a href="/pages/role/index.php">Roles</a>
                 <a href="/pages/role-assignment/index.php">Role Assignments</a>
                 
-                <?php } else { ?> 
+                <?php } else { ?>
                 <a href="/index.php">Home</a>
                 <a href="/pages/bank-account/index.php">Accounts</a>
                 <a href="/pages/fixed-deposit/index.php">Fixed Deposits</a>
@@ -29,8 +29,8 @@ class DefaultPageHeader {
 
                 <?php } ?>
                 <a href="/logout.php">Logout</a>
-            </nav> 
-            <?php } ?> 
+            </nav>
+            <?php } ?>
             
         </header>
         <?php

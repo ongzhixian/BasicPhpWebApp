@@ -1,7 +1,8 @@
 <?php
 namespace PineappleFinance\Pages\RoleAssignment;
 
-require_once "../../_config.php";
+require_once "../../_config.php"; // NOSONAR: Manual auto-loader
+use PineappleFinance\Includes\DefaultPageHeader;
 
 require_once "../../modules/role_assignment_service.php";
 use PineappleFinance\Services\RoleAssignmentService;
@@ -30,7 +31,7 @@ $roleAssignmentList = $roleAssignmentService->GetRoleAssignmentList();
 </head>
 <body>
 
-    <?php include_once '../../includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

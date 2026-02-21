@@ -7,7 +7,8 @@ if ( !isset($_GET['username']) ) {
 }
 $username = htmlspecialchars($_GET['username']);
 
-require_once "../../_config.php";
+require_once "../../_config.php"; // NOSONAR: Manual auto-loader
+use PineappleFinance\Includes\DefaultPageHeader;
 
 require_once "../../modules/login_service.php";
 use PineappleFinance\Services\LoginService;
@@ -57,7 +58,7 @@ $login = $loginService->GetLogin($username);
 </head>
 <body>
 
-    <?php include_once '../../includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

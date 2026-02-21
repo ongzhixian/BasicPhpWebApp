@@ -1,7 +1,9 @@
 <?php
 namespace PineappleFinance\Pages\BankAccount;
 
-require_once "../../_config.php";
+require_once "../../_config.php"; // NOSONAR: Manual auto-loader
+use PineappleFinance\Includes\DefaultPageHeader;
+
 
 require_once "../../modules/role_service.php";
 use PineappleFinance\Services\RoleService;
@@ -48,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <?php include_once '../../includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

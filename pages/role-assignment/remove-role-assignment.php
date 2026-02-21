@@ -8,7 +8,8 @@ if ( !isset($_GET['username']) || !isset($_GET['role']) ) {
 $username = htmlspecialchars($_GET['username']);
 $role = htmlspecialchars($_GET['role']);
 
-require_once "../../_config.php";
+require_once "../../_config.php"; // NOSONAR: Manual auto-loader
+use PineappleFinance\Includes\DefaultPageHeader;
 
 require_once "../../modules/role_assignment_service.php";
 use PineappleFinance\Services\RoleAssignmentService;
@@ -59,7 +60,7 @@ $roleAssignment = $roleAssignmentService->GetRoleAssignment($username, $role)[0]
 </head>
 <body>
 
-    <?php include_once '../../includes/header.php'; ?>
+    <?php DefaultPageHeader::render(); ?>
 
     <article class="with-aside">
 

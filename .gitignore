@@ -24,5 +24,6 @@
 /app/Config/database.php
 /vendors/*
 
+**/run*.ps1
 .idea/
 .scannerwork/

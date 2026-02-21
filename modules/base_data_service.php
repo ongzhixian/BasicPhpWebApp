@@ -2,6 +2,7 @@
 namespace PineappleFinance\Services;
 
 abstract class BaseDataService {
+    
     protected $serverName;
     protected $connectionInfo;
 

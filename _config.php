@@ -37,7 +37,7 @@ spl_autoload_register(function ($class) {
     if (strncmp($includePrefix, $class, $len) === 0) {
         $file = $base_dir . 'includes\\header.php';
         if (file_exists($file)) {
-            require $file;
+            require_once $file;
         }
     }
 

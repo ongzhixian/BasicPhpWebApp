@@ -2,8 +2,8 @@
 namespace PineappleFinance\Pages\Dashboard;
 
 require_once "_config.php";
+require_once __DIR__ . '/includes/header.php';
 
-require_once 'includes/header.php';
 use PineappleFinance\Includes\DefaultPageHeader;
 
 require_once "modules/bank_account_service.php";

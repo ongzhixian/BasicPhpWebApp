@@ -51,7 +51,7 @@ $loginList = $loginService->GetLoginList();
                     <?php foreach ($loginList as $login) { ?>
                     <tr>
                         <td>
-                            <a href="/pages/login/update-login.php?username=<?= $login['username'] ?>">
+                            <a aria-label="Update login <?= $login['username'] ?>" href="/pages/login/update-login.php?username=<?= $login['username'] ?>">
                             <?= $login['username'] ?>
                             </a>
                         </td>

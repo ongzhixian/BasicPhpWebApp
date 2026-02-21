@@ -58,7 +58,7 @@ $totalPlacementAmount = $fixedDepositService->GetTotalFixedDepositPlacementAmoun
                         <tr>
                             <td><?= $fixedDeposit['name'] ?></td>
                             <td>
-                                <a href="/pages/fixed-deposit/update-fixed-deposit.php?id=<?= $fixedDeposit['id'] ?>">
+                                <a aria-label="Update fixed deposit <?= $fixedDeposit['description'] ?>" href="/pages/fixed-deposit/update-fixed-deposit.php?id=<?= $fixedDeposit['id'] ?>">
                                 <?= $fixedDeposit['description'] ?>
                                 </a>
                             </td>

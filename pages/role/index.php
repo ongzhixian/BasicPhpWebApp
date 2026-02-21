@@ -52,7 +52,7 @@ $roleList = $roleService->GetRoleList();
                     <?php foreach ($roleList as $role) { ?>
                     <tr>
                         <td>
-                            <a href="/pages/role/update-role.php?name=<?= $role['name'] ?>">
+                            <a aria-label="Update role <?= $role['name'] ?>" href="/pages/role/update-role.php?name=<?= $role['name'] ?>">
                             <?= $role['name'] ?>
                             </a>
                         </td>

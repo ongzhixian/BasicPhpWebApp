@@ -68,7 +68,7 @@ $totalBankBalance = $bankAccountService->GetTotalBankBalance($_SESSION['user_id'
                     <tr>
                         <td><?= $bankAccount['name'] ?></td>
                         <td>
-                            <a href="/pages/bank-account/update-bank-account.php?account-code=<?= $bankAccount['account_code'] ?>">
+                            <a aria-label="Update bank account <?= $bankAccount['account_code'] ?>" href="/pages/bank-account/update-bank-account.php?account-code=<?= $bankAccount['account_code'] ?>">
                             <?= $bankAccount['account_code'] ?>
                             </a>
                         </td>

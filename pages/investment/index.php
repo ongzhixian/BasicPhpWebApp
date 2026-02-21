@@ -75,7 +75,7 @@ $totalInvestmentAmount = $totalInvestmentAmount + $totalEquityInvestmentAmount;
                         <tr>
                             <td><?= $investment['type'] ?></td>
                             <td>
-                                <a href="/pages/investment/update-investment.php?id=<?= $investment['id'] ?>">
+                                <a aria-label="Update investment <?= $investment['description'] ?>" href="/pages/investment/update-investment.php?id=<?= $investment['id'] ?>">
                                 <?= $investment['description'] ?>
                                 </a>
                             </td>
@@ -89,7 +89,7 @@ $totalInvestmentAmount = $totalInvestmentAmount + $totalEquityInvestmentAmount;
                         <tr>
                             <td><?= $equity['type'] ?></td>
                             <td>
-                                <a href="/pages/investment/update-equity.php?id=<?= $equity['id'] ?>">
+                                <a aria-label="Update equity <?= $equity['description'] ?>" href="/pages/investment/update-equity.php?id=<?= $equity['id'] ?>">
                                 <?= $equity['description'] ?>
                                 </a>
                             </td>

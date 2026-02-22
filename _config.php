@@ -17,7 +17,6 @@ function require_authenticated_user() {
     return $_SESSION['user_id'];
 }
 
-
 spl_autoload_register(function ($class) {
 
     $prefix = 'PineappleFinance\\';

@@ -24,12 +24,22 @@
 /app/Config/database.php
 /vendors/*
 
-**/run*.ps1
+# JetBrains
 .idea/
+
+# SonarQube
 .scannerwork/
 
+# PHP Unit
+.phpunit.result.cache
 
-**/play/.pytest_cache
-**/play/__pycache__
-**/play/screenshots
+# Python
+**/__pycache__
+
+# Tests
+**/e2e/.pytest_cache
+**/e2e/screenshots
 **/play-backup/
+
+# ZX Custom
+**/run*.ps1

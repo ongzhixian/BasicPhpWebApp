@@ -35,8 +35,8 @@ abstract class BaseDataService {
             }
             
             return [
-                "success" => false, 
-                "message" => "Execution failed.", 
+                "success" => false,
+                "message" => "Execution failed.",
                 "details" => sqlsrv_errors()
             ];
         } finally {

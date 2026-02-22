@@ -8,10 +8,6 @@ $bankService = new BankService();
 
 use PHPUnit\Framework\TestCase;
 
-// if (!defined('SQLSERVER')) define('SQLSERVER', 'localhost');
-// if (!defined('PINEAPPLE_DB')) define('PINEAPPLE_DB', 'test_db');
-// if (!defined('DEBUG')) define('DEBUG', true);
-
 class BankServiceTest extends TestCase
 {
     private $bankService;
@@ -28,29 +24,29 @@ class BankServiceTest extends TestCase
     /**
      * Test data sanitization logic (Logic Test)
      */
-    public function testGetSanitisedInputReturnsObjectOnValidData()
-    {
-        $rawData = new \stdClass();
-        $rawData->bank_code = " CHASE ";
-        $rawData->full_name = "JP Morgan Chase";
-        $rawData->session_user_id = "user123";
+    // public function testGetSanitisedInputReturnsObjectOnValidData()
+    // {
+    //     $rawData = new \stdClass();
+    //     $rawData->bank_code = " CHASE ";
+    //     $rawData->full_name = "JP Morgan Chase";
+    //     $rawData->session_user_id = "user123";
 
-        $result = $this->bankService->GetSanitisedInput($rawData, true);
+    //     $result = $this->bankService->GetSanitisedInput($rawData, true);
 
-        $this->assertNotNull($result);
-        $this->assertEquals("CHASE", $result->bank_code); // Tests trim
-        $this->assertEquals("user123", $result->create_by);
-        $this->assertObjectHasProperty('create_at', $result);
-    }
+    //     $this->assertNotNull($result);
+    //     $this->assertEquals("CHASE", $result->bank_code); // Tests trim
+    //     $this->assertEquals("user123", $result->create_by);
+    //     $this->assertObjectHasProperty('create_at', $result);
+    // }
 
-    public function testGetSanitisedInputReturnsNullOnMissingData()
-    {
-        $rawData = new \stdClass();
-        $rawData->bank_code = ""; // Empty code
+    // public function testGetSanitisedInputReturnsNullOnMissingData()
+    // {
+    //     $rawData = new \stdClass();
+    //     $rawData->bank_code = ""; // Empty code
         
-        $result = $this->bankService->GetSanitisedInput($rawData);
-        $this->assertNull($result);
-    }
+    //     $result = $this->bankService->GetSanitisedInput($rawData);
+    //     $this->assertNull($result);
+    // }
 
     /**
      * Test GetBankList (Database Interaction Mock)

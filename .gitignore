@@ -31,14 +31,15 @@
 .scannerwork/
 
 # PHP Unit
-.phpunit.result.cache
+**/.phpunit.cache
+**/.phpunit.result.cache
 
 # Python
 **/__pycache__
 
 # Tests
 **/e2e/.pytest_cache
-**/e2e/screenshots
+**/test-results/screenshots
 **/play-backup/
 
 # ZX Custom
